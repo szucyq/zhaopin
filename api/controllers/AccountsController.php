@@ -9,6 +9,7 @@ namespace api\controllers;
 use common\models\Accounts;
 use yii\rest\ActiveController;
 use yii;
+use api\libs\Message;
 
 
 class AccountsController extends ActiveController {
@@ -21,6 +22,7 @@ class AccountsController extends ActiveController {
             'test' => ['Post'],
             'create'=>['Post'],
             'index'=>['Get'],
+            'login'=>['Post'],
         ];
     }
     public function actions()
@@ -55,6 +57,14 @@ class AccountsController extends ActiveController {
     }
     public function actionData(){
         return ['status'=>0,"data"=>'data'];
+    }
+    /**
+     * login
+     * if first login ,auto create an account
+     *
+     */
+    public function actionLogin(){
+        return ;
     }
 }
 
