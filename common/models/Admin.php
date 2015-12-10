@@ -1,11 +1,8 @@
 <?php
+
 namespace common\models;
 
 use Yii;
-use yii\base\NotSupportedException;
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
-use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "zp_admin".
@@ -20,27 +17,16 @@ use yii\web\IdentityInterface;
  * @property integer $admin_birthday
  * @property integer $admin_state
  */
-class User extends ActiveRecord implements IdentityInterface
+class Admin extends \yii\db\ActiveRecord
 {
     const STATUS_DELETED = -1;
     const STATUS_ACTIVE = 0;
-
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%zp_admin}}';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::className(),
-        ];
+        return 'zp_admin';
     }
 
     /**
@@ -56,7 +42,23 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
-
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'admin_id' => 'Admin ID',
+            'admin_username' => 'Admin Username',
+            'admin_pwd' => 'Admin Pwd',
+            'admin_email' => 'Admin Email',
+            'admin_nick_name' => 'Admin Nick Name',
+            'admin_icon' => 'Admin Icon',
+            'admin_sex' => 'Admin Sex',
+            'admin_birthday' => 'Admin Birthday',
+            'admin_state' => 'Admin State',
+        ];
+    }
     /**
      * @inheritdoc
      */

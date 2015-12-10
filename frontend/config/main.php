@@ -28,6 +28,13 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=zhaopin',
+            'username' => 'root',
+            'password' => 'root',
+            'charset' => 'utf8',
+        ],
     ],
     'params' => $params,
 ];

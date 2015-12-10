@@ -3,7 +3,7 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m130524_201442_init extends Migration
+class m151210_031352_test extends Migration
 {
     public function up()
     {
@@ -13,10 +13,10 @@ class m130524_201442_init extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%test2}}', [
+        $this->createTable('{{%test}}', [
             'id' => $this->primaryKey(),
             'username' => $this->string()->notNull()->unique(),
-            'auth_key' => $this->string(32)->notNull(),
+            'auth_key' => $this->string(35)->notNull(),
             'password_hash' => $this->string()->notNull(),
             'password_reset_token' => $this->string()->unique(),
             'email' => $this->string()->notNull()->unique(),
@@ -29,6 +29,20 @@ class m130524_201442_init extends Migration
 
     public function down()
     {
-        $this->dropTable('{{%test2}}');
+//        echo "m151210_031352_test cannot be reverted.\n";
+//
+//        return false;
+        $this->dropTable('{{%test}}');
     }
+
+    /*
+    // Use safeUp/safeDown to run migration code within a transaction
+    public function safeUp()
+    {
+    }
+
+    public function safeDown()
+    {
+    }
+    */
 }

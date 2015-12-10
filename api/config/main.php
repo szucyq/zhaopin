@@ -31,7 +31,7 @@ return [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;dbname=zhaopin',
+            'dsn' => 'mysql:host=localhost;dbname=zhaopin',
             'username' => 'root',
             'password' => 'root',
             'charset' => 'utf8',
