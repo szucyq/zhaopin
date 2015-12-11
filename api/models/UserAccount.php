@@ -1,5 +1,5 @@
 <?php
-namespace common\models;
+namespace api\models;
 
 use Yii;
 use yii\base\NotSupportedException;
@@ -20,30 +20,17 @@ use yii\web\IdentityInterface;
  * @property integer $admin_birthday
  * @property integer $admin_state
  */
-class User extends ActiveRecord implements IdentityInterface
+class UserAccount extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = -1;
     const STATUS_ACTIVE = 0;
-
-    private static $users = [
-        '1' => [
-            'admin_id' => '1',
-            'admin_username' => 'admin',
-            'admin_access_token' => 'token1',
-        ],
-        '101' => [
-            'admin_id' => '101',
-            'admin_username' => 'demo',
-            'accessToken' => '101-token',
-        ],
-    ];
 
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%zp_user}}';
+        return '{{%zp_accounts}}';
     }
 
     /**
@@ -62,11 +49,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['admin_username', 'admin_pwd'], 'required'],
-            [['admin_sex', 'admin_birthday', 'auth_key', 'admin_state'], 'integer'],
-            [['admin_username', 'admin_email', 'admin_nick_name'], 'string', 'max' => 30],
-            [['admin_pwd', 'admin_icon'], 'string', 'max' => 100],
-            [['admin_access_token'], 'string', 'max' => 50]
+            [['uid', 'type', 'mobile', 'state', 'create_time'], 'integer'],
+            [['username'], 'required'],
+            [['username'], 'string', 'max' => 20],
+            [['email', 'remark'], 'string', 'max' => 30],
+            [['openid', 'unionid', 'access_token', 'device_token'], 'string', 'max' => 100]
         ];
     }
 
@@ -76,7 +63,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['admin_id' => $id, 'admin_state' => self::STATUS_ACTIVE]);
+        return static::findOne(['aid' => $id, 'state' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -92,7 +79,8 @@ class User extends ActiveRecord implements IdentityInterface
 //        }
 //
 //        return null;
-        return static::findOne(['admin_access_token' => $token]);
+
+        return static::findOne(['aid' => 1]);
     }
 
     /**
@@ -103,7 +91,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['admin_username' => $username, 'admin_state' => self::STATUS_ACTIVE]);
+        return static::findOne(['username' => $username, 'state' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -120,7 +108,7 @@ class User extends ActiveRecord implements IdentityInterface
 
         return static::findOne([
             'password_reset_token' => $token,
-            'admin_state' => self::STATUS_ACTIVE,
+            'state' => self::STATUS_ACTIVE,
         ]);
     }
 

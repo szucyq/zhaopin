@@ -10,11 +10,13 @@ return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['log'],
-    'modules' => [],
+    'bootstrap' => ['debug','log'],
+    'modules' => [
+        'debug' => 'yii\debug\Module',
+    ],
     'components' => [
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'backend\models\UserAdmin',
             'enableAutoLogin' => true,
         ],
         'log' => [

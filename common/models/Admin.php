@@ -15,12 +15,12 @@ use Yii;
  * @property string $admin_icon
  * @property integer $admin_sex
  * @property integer $admin_birthday
+ * @property integer $auth_key
+ * @property string $admin_access_token
  * @property integer $admin_state
  */
 class Admin extends \yii\db\ActiveRecord
 {
-    const STATUS_DELETED = -1;
-    const STATUS_ACTIVE = 0;
     /**
      * @inheritdoc
      */
@@ -36,9 +36,10 @@ class Admin extends \yii\db\ActiveRecord
     {
         return [
             [['admin_username', 'admin_pwd'], 'required'],
-            [['admin_sex', 'admin_birthday', 'admin_state'], 'integer'],
-            [['admin_username',  'admin_email', 'admin_nick_name'], 'string', 'max' => 30],
-            [['admin_icon','admin_pwd'], 'string', 'max' => 100]
+            [['admin_sex', 'admin_birthday', 'auth_key', 'admin_state'], 'integer'],
+            [['admin_username', 'admin_email', 'admin_nick_name'], 'string', 'max' => 30],
+            [['admin_pwd', 'admin_icon'], 'string', 'max' => 100],
+            [['admin_access_token'], 'string', 'max' => 50]
         ];
     }
 
@@ -48,145 +49,17 @@ class Admin extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'admin_id' => 'Admin ID',
-            'admin_username' => 'Admin Username',
-            'admin_pwd' => 'Admin Pwd',
-            'admin_email' => 'Admin Email',
-            'admin_nick_name' => 'Admin Nick Name',
-            'admin_icon' => 'Admin Icon',
-            'admin_sex' => 'Admin Sex',
-            'admin_birthday' => 'Admin Birthday',
-            'admin_state' => 'Admin State',
+            'admin_id' => Yii::t('app', '管理员id'),
+            'admin_username' => Yii::t('app', '管理员账号'),
+            'admin_pwd' => Yii::t('app', '密码'),
+            'admin_email' => Yii::t('app', '邮箱'),
+            'admin_nick_name' => Yii::t('app', '昵称'),
+            'admin_icon' => Yii::t('app', '头像'),
+            'admin_sex' => Yii::t('app', '性别，0男，1女 2保密'),
+            'admin_birthday' => Yii::t('app', '出生日期'),
+            'auth_key' => Yii::t('app', 'Auth Key'),
+            'admin_access_token' => Yii::t('app', 'Admin Access Token'),
+            'admin_state' => Yii::t('app', '状态，－1删除，0正常，1禁用，2待审核，3拒绝'),
         ];
-    }
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentity($id)
-    {
-        return static::findOne(['admin_id' => $id, 'admin_state' => self::STATUS_ACTIVE]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-    }
-
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        return static::findOne(['admin_username' => $username, 'admin_state' => self::STATUS_ACTIVE]);
-    }
-
-    /**
-     * Finds user by password reset token
-     *
-     * @param string $token password reset token
-     * @return static|null
-     */
-    public static function findByPasswordResetToken($token)
-    {
-        if (!static::isPasswordResetTokenValid($token)) {
-            return null;
-        }
-
-        return static::findOne([
-            'password_reset_token' => $token,
-            'admin_state' => self::STATUS_ACTIVE,
-        ]);
-    }
-
-    /**
-     * Finds out if password reset token is valid
-     *
-     * @param string $token password reset token
-     * @return boolean
-     */
-    public static function isPasswordResetTokenValid($token)
-    {
-        if (empty($token)) {
-            return false;
-        }
-
-        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
-        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
-        return $timestamp + $expire >= time();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getId()
-    {
-        return $this->getPrimaryKey();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAuthKey()
-    {
-        return $this->auth_key;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->getAuthKey() === $authKey;
-    }
-
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return boolean if password provided is valid for current user
-     */
-    public function validatePassword($password)
-    {
-        return Yii::$app->security->validatePassword($password, $this->admin_pwd);
-    }
-
-    /**
-     * Generates password hash from password and sets it to the model
-     *
-     * @param string $password
-     */
-    public function setPassword($password)
-    {
-        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
-    }
-
-    /**
-     * Generates "remember me" authentication key
-     */
-    public function generateAuthKey()
-    {
-        $this->auth_key = Yii::$app->security->generateRandomString();
-    }
-
-    /**
-     * Generates new password reset token
-     */
-    public function generatePasswordResetToken()
-    {
-        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
-    }
-
-    /**
-     * Removes password reset token
-     */
-    public function removePasswordResetToken()
-    {
-        $this->password_reset_token = null;
     }
 }

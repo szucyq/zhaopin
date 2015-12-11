@@ -1,5 +1,5 @@
 <?php
-namespace common\models;
+namespace backend\models;
 
 use Yii;
 use yii\base\NotSupportedException;
@@ -20,30 +20,17 @@ use yii\web\IdentityInterface;
  * @property integer $admin_birthday
  * @property integer $admin_state
  */
-class User extends ActiveRecord implements IdentityInterface
+class UserAdmin extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = -1;
     const STATUS_ACTIVE = 0;
-
-    private static $users = [
-        '1' => [
-            'admin_id' => '1',
-            'admin_username' => 'admin',
-            'admin_access_token' => 'token1',
-        ],
-        '101' => [
-            'admin_id' => '101',
-            'admin_username' => 'demo',
-            'accessToken' => '101-token',
-        ],
-    ];
 
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%zp_user}}';
+        return '{{%zp_admin}}';
     }
 
     /**
@@ -63,10 +50,9 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['admin_username', 'admin_pwd'], 'required'],
-            [['admin_sex', 'admin_birthday', 'auth_key', 'admin_state'], 'integer'],
-            [['admin_username', 'admin_email', 'admin_nick_name'], 'string', 'max' => 30],
-            [['admin_pwd', 'admin_icon'], 'string', 'max' => 100],
-            [['admin_access_token'], 'string', 'max' => 50]
+            [['admin_sex', 'admin_birthday', 'admin_state'], 'integer'],
+            [['admin_username',  'admin_email', 'admin_nick_name'], 'string', 'max' => 30],
+            [['admin_icon','admin_pwd'], 'string', 'max' => 100]
         ];
     }
 
@@ -84,15 +70,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-//        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-//        foreach (self::$users as $user) {
-//            if ($user['admin_access_token'] === $token) {
-//                return new static($user);
-//            }
-//        }
-//
-//        return null;
-        return static::findOne(['admin_access_token' => $token]);
+        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
     /**
