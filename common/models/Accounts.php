@@ -5,31 +5,33 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "zp_accounts".
+ * This is the model class for table "rc_accounts".
  *
- * @property integer $aid
- * @property integer $uid
- * @property integer $type
- * @property string $username
- * @property integer $mobile
- * @property string $email
- * @property string $openid
- * @property string $unionid
- * @property string $access_token
- * @property string $device_token
- * @property integer $state
- * @property integer $create_time
- * @property string $remark
+ * @property integer $acc_id
+ * @property integer $acc_userid
+ * @property string $acc_username
+ * @property string $acc_pwd
+ * @property integer $acc_mobile
+ * @property string $acc_email
+ * @property string $acc_openid
+ * @property string $acc_unionid
+ * @property string $acc_access_token
+ * @property string $acc_device_token
+ * @property integer $acc_type
+ * @property integer $acc_state
+ * @property integer $acc_disabled_begintime
+ * @property integer $acc_disabled_length
+ * @property integer $acc_create_time
+ * @property string $acc_remark
  */
 class Accounts extends \yii\db\ActiveRecord
 {
-
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'zp_accounts';
+        return 'rc_accounts';
     }
 
     /**
@@ -38,11 +40,10 @@ class Accounts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uid', 'type', 'mobile', 'state', 'create_time'], 'integer'],
-            [['username'], 'required'],
-            [['username'], 'string', 'max' => 20],
-            [['email', 'remark'], 'string', 'max' => 30],
-            [['openid', 'unionid', 'access_token', 'device_token'], 'string', 'max' => 100]
+            [['acc_userid', 'acc_mobile', 'acc_access_token', 'acc_type', 'acc_state'], 'required'],
+            [['acc_userid', 'acc_mobile', 'acc_type', 'acc_state', 'acc_disabled_begintime', 'acc_disabled_length', 'acc_create_time'], 'integer'],
+            [['acc_username', 'acc_pwd', 'acc_email', 'acc_remark'], 'string', 'max' => 30],
+            [['acc_openid', 'acc_unionid', 'acc_access_token', 'acc_device_token'], 'string', 'max' => 100]
         ];
     }
 
@@ -52,20 +53,22 @@ class Accounts extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'aid' => Yii::t('app', '账号id'),
-            'uid' => Yii::t('app', '用户id'),
-            'type' => Yii::t('app', '用户类型0求职者，1商家'),
-            'username' => Yii::t('app', '用户名'),
-            'mobile' => Yii::t('app', '手机号'),
-            'email' => Yii::t('app', '邮箱'),
-            'openid' => Yii::t('app', '微信openid'),
-            'unionid' => Yii::t('app', '微信统一身份id'),
-            'access_token' => Yii::t('app', '用户token'),
-            'device_token' => Yii::t('app', '设备token'),
-            'state' => Yii::t('app', '状态，－1删除，0正常，1禁用，2待审核，3拒绝'),
-            'create_time' => Yii::t('app', '注册时间'),
-            'remark' => Yii::t('app', '备注'),
+            'acc_id' => 'Acc ID',
+            'acc_userid' => 'Acc Userid',
+            'acc_username' => 'Acc Username',
+            'acc_pwd' => 'Acc Pwd',
+            'acc_mobile' => 'Acc Mobile',
+            'acc_email' => 'Acc Email',
+            'acc_openid' => 'Acc Openid',
+            'acc_unionid' => 'Acc Unionid',
+            'acc_access_token' => 'Acc Access Token',
+            'acc_device_token' => 'Acc Device Token',
+            'acc_type' => 'Acc Type',
+            'acc_state' => 'Acc State',
+            'acc_disabled_begintime' => 'Acc Disabled Begintime',
+            'acc_disabled_length' => 'Acc Disabled Length',
+            'acc_create_time' => 'Acc Create Time',
+            'acc_remark' => 'Acc Remark',
         ];
     }
-
 }

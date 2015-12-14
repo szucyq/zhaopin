@@ -32,7 +32,7 @@ return [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=zhaopin',
+            'dsn' => 'mysql:host=localhost;dbname=recruitment',
             'username' => 'root',
             'password' => 'root',
             'charset' => 'utf8',

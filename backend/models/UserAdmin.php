@@ -30,7 +30,7 @@ class UserAdmin extends ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return '{{%zp_admin}}';
+        return '{{%rc_admin}}';
     }
 
     /**
@@ -49,10 +49,10 @@ class UserAdmin extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['admin_username', 'admin_pwd'], 'required'],
-            [['admin_sex', 'admin_birthday', 'admin_state'], 'integer'],
-            [['admin_username',  'admin_email', 'admin_nick_name'], 'string', 'max' => 30],
-            [['admin_icon','admin_pwd'], 'string', 'max' => 100]
+            [['admin_account'], 'required'],
+            [['admin_mobile', 'admin_state'], 'integer'],
+            [['admin_account', 'admin_email', 'admin_nickname'], 'string', 'max' => 30],
+            [['admin_pwd', 'admin_icon', 'admin_role', 'admin_authorities'], 'string', 'max' => 100]
         ];
     }
 
@@ -81,7 +81,7 @@ class UserAdmin extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['admin_username' => $username, 'admin_state' => self::STATUS_ACTIVE]);
+        return static::findOne(['admin_account' => $username, 'admin_state' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -132,7 +132,7 @@ class UserAdmin extends ActiveRecord implements IdentityInterface
      */
     public function getAuthKey()
     {
-        return $this->auth_key;
+//        return $this->auth_key;
     }
 
     /**

@@ -25,18 +25,7 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = -1;
     const STATUS_ACTIVE = 0;
 
-    private static $users = [
-        '1' => [
-            'admin_id' => '1',
-            'admin_username' => 'admin',
-            'admin_access_token' => 'token1',
-        ],
-        '101' => [
-            'admin_id' => '101',
-            'admin_username' => 'demo',
-            'accessToken' => '101-token',
-        ],
-    ];
+
 
     /**
      * @inheritdoc
@@ -62,11 +51,10 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['admin_username', 'admin_pwd'], 'required'],
-            [['admin_sex', 'admin_birthday', 'auth_key', 'admin_state'], 'integer'],
-            [['admin_username', 'admin_email', 'admin_nick_name'], 'string', 'max' => 30],
-            [['admin_pwd', 'admin_icon'], 'string', 'max' => 100],
-            [['admin_access_token'], 'string', 'max' => 50]
+            [['admin_account'], 'required'],
+            [['admin_mobile', 'admin_state'], 'integer'],
+            [['admin_account', 'admin_email', 'admin_nickname'], 'string', 'max' => 30],
+            [['admin_pwd', 'admin_icon', 'admin_role', 'admin_authorities'], 'string', 'max' => 100]
         ];
     }
 
@@ -103,7 +91,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['admin_username' => $username, 'admin_state' => self::STATUS_ACTIVE]);
+        return static::findOne(['admin_account' => $username, 'admin_state' => self::STATUS_ACTIVE]);
     }
 
     /**

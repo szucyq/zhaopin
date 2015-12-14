@@ -20,7 +20,7 @@ class InitController extends \yii\console\Controller
         $password = $this->prompt('Password:');         // 接收密码
         $password_hash = Yii::$app->security->generatePasswordHash($password);
         $model = new Admin();                            // 创建一个新用户
-        $model->admin_username = $username;                   // 完成赋值
+        $model->admin_account= $username;                   // 完成赋值
         $model->admin_pwd = $password_hash;
         if (!$model->save())                            // 保存新的用户
         {
