@@ -30,7 +30,7 @@ class UserAccount extends ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return '{{%zp_accounts}}';
+        return '{{%rc_accounts}}';
     }
 
     /**
@@ -49,11 +49,10 @@ class UserAccount extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['uid', 'type', 'mobile', 'state', 'create_time'], 'integer'],
-            [['username'], 'required'],
-            [['username'], 'string', 'max' => 20],
-            [['email', 'remark'], 'string', 'max' => 30],
-            [['openid', 'unionid', 'access_token', 'device_token'], 'string', 'max' => 100]
+            [['acc_userid', 'acc_mobile', 'acc_access_token', 'acc_type', 'acc_state'], 'required'],
+            [['acc_userid', 'acc_mobile', 'acc_type', 'acc_state', 'acc_disabled_begintime', 'acc_disabled_length', 'acc_create_time'], 'integer'],
+            [['acc_username', 'acc_pwd', 'acc_email', 'acc_remark'], 'string', 'max' => 30],
+            [['acc_openid', 'acc_unionid', 'acc_access_token', 'acc_device_token'], 'string', 'max' => 100]
         ];
     }
 
@@ -63,7 +62,7 @@ class UserAccount extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['aid' => $id, 'state' => self::STATUS_ACTIVE]);
+        return static::findOne(['acc_id' => $id, 'acc_state' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -72,15 +71,7 @@ class UserAccount extends ActiveRecord implements IdentityInterface
     public static function findIdentityByAccessToken($token, $type = null)
     {
 //        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-//        foreach (self::$users as $user) {
-//            if ($user['admin_access_token'] === $token) {
-//                return new static($user);
-//            }
-//        }
-//
-//        return null;
-
-        return static::findOne(['aid' => 1]);
+        return static::findOne(['acc_access_token' => $token, 'acc_state' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -91,9 +82,14 @@ class UserAccount extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'state' => self::STATUS_ACTIVE]);
+        return static::findOne(['acc_username' => $username, 'acc_state' => self::STATUS_ACTIVE]);
     }
 
+    public static function findByUsermobile($mobile)
+    {
+//        return static::findOne(['acc_mobile' => $mobile, 'acc_state' => self::STATUS_ACTIVE]);
+        return static::findOne(['acc_mobile' => $mobile,]);
+    }
     /**
      * Finds user by password reset token
      *
@@ -108,7 +104,7 @@ class UserAccount extends ActiveRecord implements IdentityInterface
 
         return static::findOne([
             'password_reset_token' => $token,
-            'state' => self::STATUS_ACTIVE,
+            'acc_state' => self::STATUS_ACTIVE,
         ]);
     }
 

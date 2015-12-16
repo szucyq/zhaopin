@@ -71,4 +71,13 @@ class Accounts extends \yii\db\ActiveRecord
             'acc_remark' => 'Acc Remark',
         ];
     }
+    /*
+     * 根据用户mobile查询
+     */
+    public static function get_user_by_mobile($mobile){
+        $sql = "select * from rc_accounts where acc_mobile = '{$mobile}'";
+        $userdata = Yii::$app->db->createCommand($sql)->queryOne();
+        return $userdata;
+    }
+
 }

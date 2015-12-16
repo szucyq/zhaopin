@@ -13,6 +13,24 @@ return [
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
+        'request' => [
+            'parsers' => [
+                'text/xml' => 'bobchengbin\Yii2XmlRequestParser\XmlRequestParser',
+                'application/xml' => 'bobchengbin\Yii2XmlRequestParser\XmlRequestParser',
+                'application/json' => 'yii\web\JsonParser',
+                'text/json' => 'yii\web\JsonParser',
+            ],
+        ],
+//        'response'=>[
+//            'class' => 'api\libs\Response',
+//            'newheaders'=>[
+//                'Access-Control-Allow-Origin'=>'*',
+//            ],
+//        ],
+        'response'=>[
+            'format' => yii\web\Response::FORMAT_JSON,
+            'charset' => 'UTF-8',
+        ],
         'user' => [
             'identityClass' => 'api\models\UserAccount',
             'enableAutoLogin' => true,
@@ -41,11 +59,9 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules'=>[
-//                'login' => 'site/login',
-//                'logout' => 'site/logout',
-                ['class' => 'yii\rest\UrlRule',
-                    'controller' => ['accounts'],
-                ]
+                'login' => 'site/login',
+                'logout' => 'site/logout',
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['accounts'],]
             ]
         ],
 

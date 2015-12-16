@@ -4,16 +4,19 @@ namespace api\models;
 use Yii;
 use yii\base\Model;
 
+use api\libs\Message;
 /**
  * Login form
  */
 class LoginForm extends Model
 {
-    public $username;
-    public $password;
-    public $rememberMe = true;
 
-    private $_user;
+
+    public $acc_mobile;
+    public $acc_access_token;
+    private $_user = false;
+
+
 
 
     /**
@@ -22,12 +25,11 @@ class LoginForm extends Model
     public function rules()
     {
         return [
-            // username and password are both required
-            [['username', 'password'], 'required'],
-            // rememberMe must be a boolean value
-            ['rememberMe', 'boolean'],
-            // password is validated by validatePassword()
-            ['password', 'validatePassword'],
+//            [['acc_userid', 'acc_mobile', 'acc_access_token', 'acc_type', 'acc_state'], 'required'],
+            [['acc_mobile',], 'required'],
+            [['acc_userid', 'acc_mobile', 'acc_type', 'acc_state', 'acc_disabled_begintime', 'acc_disabled_length', 'acc_create_time'], 'integer'],
+            [['acc_username', 'acc_pwd', 'acc_email', 'acc_remark'], 'string', 'max' => 30],
+            [['acc_openid', 'acc_unionid', 'acc_access_token', 'acc_device_token'], 'string', 'max' => 100]
         ];
     }
 
@@ -42,8 +44,10 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-            if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+            if (!$user) {
+//                $this->addError($attribute, 'Incorrect username or password.');
+
+                return Message::say(Message::E_ERROR,"saf","用户名不存在");
             }
         }
     }
@@ -55,11 +59,18 @@ class LoginForm extends Model
      */
     public function login()
     {
-        if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
-        } else {
-            return false;
+//        if ($this->validate()) {
+//            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+//        } else {
+//            return false;
+//        }
+
+        $user = $this->getUser();
+        if (!$user) {
+            return Message::say(Message::E_ERROR,null,"用户名不存在");
         }
+
+        return Message::say(Message::E_OK,$user,"登录成功");
     }
 
     /**
@@ -69,10 +80,13 @@ class LoginForm extends Model
      */
     protected function getUser()
     {
-        if ($this->_user === null) {
-            $this->_user = UserAccount::findByUsername($this->username);
-        }
+//        if ($this->_user === null) {
+//            $this->_user = UserAccount::findByUsermobile($this->acc_mobile);
+//        }
 
+        $this->_user = UserAccount::findByUsermobile($this->acc_mobile);
         return $this->_user;
+
+
     }
 }
