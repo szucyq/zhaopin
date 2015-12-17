@@ -27,10 +27,10 @@ return [
 //                'Access-Control-Allow-Origin'=>'*',
 //            ],
 //        ],
-        'response'=>[
-            'format' => yii\web\Response::FORMAT_JSON,
-            'charset' => 'UTF-8',
-        ],
+//        'response'=>[
+//            'format' => yii\web\Response::FORMAT_JSON,
+//            'charset' => 'UTF-8',
+//        ],
         'user' => [
             'identityClass' => 'api\models\UserAccount',
             'enableAutoLogin' => true,

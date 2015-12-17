@@ -6,13 +6,13 @@ use common\models\Applicants;
 use common\models\Business;
 use Yii;
 use yii\filters\AccessControl;
-use yii\web\Controller;
+use yii\rest\Controller;
 use api\models\LoginForm;
 use yii\filters\VerbFilter;
 use api\libs\SMS;
 use api\libs\Message;
 use yii\web\Response;
-use yii\helpers\ArrayHelper;
+
 
 
 /**
@@ -41,12 +41,12 @@ class SiteController extends Controller
         ];
     }
 
-//    public function behaviors()
-//    {
-//        $behaviors = parent::behaviors();
-//        $behaviors['contentNegotiator']['formats']['text/html'] = Response::FORMAT_JSON;
-//        return $behaviors;
-//    }
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['contentNegotiator']['formats']['text/html'] = Response::FORMAT_JSON;
+        return $behaviors;
+    }
 //    public function actions()
 //    {
 //        $actions = parent::actions();

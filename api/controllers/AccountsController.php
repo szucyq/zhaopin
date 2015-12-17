@@ -11,8 +11,8 @@ use yii\rest\ActiveController;
 use yii;
 use api\libs\Message;
 
-use yii\filters\auth\HttpBasicAuth;
 use yii\helpers\ArrayHelper;
+use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
@@ -20,6 +20,12 @@ use yii\filters\auth\QueryParamAuth;
 
 class AccountsController extends ActiveController {
     public $modelClass = 'common\models\Accounts';
+//    public $serializer = 'api\libs\Serializerapi';
+
+//    public $serializer = [
+//        'class' => 'yii\rest\Serializer',
+//        'collectionEnvelope' => 'items',
+//    ];
 
 
     protected function verbs()
@@ -57,7 +63,7 @@ class AccountsController extends ActiveController {
 
 
     public function actionIndex(){
-        return ["status"=>0,"data"=>"index"];
+//        return ["status"=>0,"data"=>"index"];
     }
 
     public function actionCreate(){
