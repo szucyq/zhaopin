@@ -119,12 +119,13 @@ class SiteController extends Controller
             $model=new Business();
             $model->business_name=$mobile;
             $model->business_contactor_mobile=$mobile;
-            $model->province_id=1;
-            $model->province_name="河南";
-            $model->city_id=1;
-            $model->city_name="郑州";
-            $model->district_id=1;
-            $model->district_name="新政";
+            $model->province_id=$params['province_id'];
+            $model->province_name=$params['province_name'];
+            $model->city_id=$params['city_id'];
+            $model->city_name=$params['city_name'];
+            $model->district_id=$params['district_id'];
+            $model->district_name=$params['district_name'];
+            $model->district_detail=$params['district_detail'];
 
             if($model->validate() && $model->save()){
                 if ($this->saveAccount($model))
@@ -133,6 +134,9 @@ class SiteController extends Controller
                 } else {
                     $model->delete();
                 }
+            }
+            else{
+                return Message::say(Message::E_ERROR,null,"字段错误");
             }
         }
         return null;
