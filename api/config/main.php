@@ -60,8 +60,10 @@ return [
             'showScriptName' => false,
             'rules'=>[
                 'login' => 'site/login',
-                'logout' => 'site/logout',
-                ['class' => 'yii\rest\UrlRule', 'controller' => ['accounts'],]
+//                'logout' => 'site/logout',
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['accounts',],],
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['applicant',],],
+
             ]
         ],
 

@@ -44,8 +44,5 @@ class AddressController extends  BaseApi{
             'pagination' => array('pageSize' => 50),
         ]);
     }
-    public function actionTest(){
-//        echo 'haha';
-        return ["status"=>0,"data"=>"test"];
-    }
+
 } 

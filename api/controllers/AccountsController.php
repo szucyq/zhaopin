@@ -6,19 +6,17 @@
  * Time: 上午10:50
  */
 namespace api\controllers;
-use common\models\Accounts;
-use yii\rest\ActiveController;
+
 use yii;
+use common\models\Accounts;
 use api\libs\Message;
-
+use api\libs\BaseApi;
+use common\models\Business;
+use common\models\Applicants;
 use yii\helpers\ArrayHelper;
-use yii\filters\auth\HttpBasicAuth;
-use yii\filters\auth\CompositeAuth;
-use yii\filters\auth\HttpBearerAuth;
-use yii\filters\auth\QueryParamAuth;
 
 
-class AccountsController extends ActiveController {
+class AccountsController extends BaseApi {
     public $modelClass = 'common\models\Accounts';
 //    public $serializer = 'api\libs\Serializerapi';
 
@@ -35,6 +33,8 @@ class AccountsController extends ActiveController {
             'create'=>['Post'],
             'index'=>['Get'],
             'login'=>['Post'],
+            'applicantupdate'=>['Post'],
+            'businessupdate'=>['Post'],
         ];
     }
 //    public function actions()
@@ -44,26 +44,14 @@ class AccountsController extends ActiveController {
 //        return $actions;
 //    }
 
-    public function behaviors()
-    {
-        return ArrayHelper::merge(parent::behaviors(), [
-            'authenticator' => [
-                #这个地方使用`ComopositeAuth` 混合认证
-                'class' => CompositeAuth::className(),
-                #`authMethods` 中的每一个元素都应该是 一种 认证方式的类或者一个 配置数组
-                'authMethods' => [
-                    HttpBasicAuth::className(),
-                    HttpBearerAuth::className(),
-                    QueryParamAuth::className(),
-                ]
-            ]
-        ]);
-    }
-
-
-
     public function actionIndex(){
 //        return ["status"=>0,"data"=>"index"];
+//        throw new yii\web\UnauthorizedHttpException;
+//          throw new \yii\web\NotFoundHttpException;
+//        throw new \yii\web\HttpException(401);
+//        throw new yii\web\UnauthorizedHttpException;
+//        return ["status"=>0,"data"=>"view"];
+//        throw new \yii\web\NotFoundHttpException;
     }
 
     public function actionCreate(){
@@ -72,27 +60,50 @@ class AccountsController extends ActiveController {
     }
 
     public function actionView($id){
-        return ["status"=>0,"data"=>"view"];
-    }
-    public function actionTest(){
-//        echo 'haha';
-        return ["status"=>0,"data"=>"test"];
-    }
-    public function actionTt(){
-//        echo 'haha';
-        return ["status"=>0,"data"=>"tt"];
-    }
-    public function actionData(){
-        return ['status'=>0,"data"=>'data'];
-    }
-    /**
-     * login
-     * if first login ,auto create an account
-     *
-     */
-    public function actionLogin(){
-        return ;
-    }
-}
+        $model = new $this->modelClass;
+        $acc_data = $model::findOne($id);
+        if($acc_data == null)
+            return Message::say(Message::E_ERROR,null,"数据为空");
 
+        $query=new \yii\db\Query();
+        $usertype=$acc_data['acc_type'];
+        if($usertype==0){
+            //求职者
+            $query ->select('a.*,b.*')
+                ->from('rc_accounts a')
+                ->innerJoin('rc_applicants b','a.acc_userid=b.applicant_id')
+                ->where(['a.acc_id'=>$id]);
+        }
+        else if($usertype==1){
+            //商家
+            $query ->select('a.*,b.*')
+                ->from('rc_accounts a')
+                ->innerJoin('rc_business b','a.acc_userid=b.business_id')
+                ->where(['a.acc_id'=>$id]);
+        }
+
+        return new \yii\data\ActiveDataProvider([
+            'query' => $query
+        ]);
+
+    }
+
+
+    public function actionApplicantupdate(){
+
+        return Message::say(Message::E_OK,null,"ok");
+    }
+    public function actionBusinessupdate(){
+        return Message::say(Message::E_OK,null,"ok");
+    }
+
+
+}
+/*
+ * 相关sql方法
+ * SELECT * FROM `rc_accounts` a, `rc_applicants` b where a.acc_userid = b.applicant_id
+ * SELECT * FROM `rc_accounts` a inner join `rc_applicants` b on a.acc_userid = b.applicant_id
+ * SELECT * FROM `rc_accounts` a inner join `rc_applicants` b on a.acc_userid = b.applicant_id  where a.acc_userid=1
+ * SELECT a.*,b.* FROM `rc_accounts` a inner join `rc_applicants` b on a.acc_userid = b.applicant_id  where a.acc_userid=1
+ */
 ?>

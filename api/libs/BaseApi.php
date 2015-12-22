@@ -9,16 +9,18 @@
 namespace api\libs;
 
 
+use yii;
 use yii\rest\ActiveController;
 use yii\web\Response;
 use yii\helpers\ArrayHelper;
-use yii;
 use yii\filters\VerbFilter;
 
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
+
+use api\libs\Message;
 
 class BaseApi extends ActiveController{
 
@@ -41,9 +43,9 @@ class BaseApi extends ActiveController{
                 'class' => CompositeAuth::className(),
                 'authMethods' => [
 //                    MyQueryParamAuth::className(),
-                    HttpBasicAuth::className(),
-                    HttpBearerAuth::className(),
-                    QueryParamAuth::className(),
+//                    HttpBasicAuth::className(),
+//                    HttpBearerAuth::className(),
+//                    QueryParamAuth::className(),
                 ],
             ],
         ]);
@@ -77,7 +79,7 @@ class BaseApi extends ActiveController{
     {
         return [
             'index' => ['GET', 'HEAD'],
-            'view' => ['GET', 'HEAD'],
+            'view' => ['GET'],
             'create' => ['POST'],
             'update' => ['POST','PUT'],
             'delete' => ['DELETE'],
