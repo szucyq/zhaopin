@@ -25,7 +25,7 @@ class ApplicationController extends BaseApi {
             'video'=>['Post'],
             'pic' => ['Post'],
             'view'=>['get'],
-            'add'=>['post'],
+
         ]);
     }
 
@@ -189,4 +189,5 @@ class ApplicationController extends BaseApi {
             return Message::say(Message::E_ERROR,null,"发布应聘失败");
         }
     }
-} 
+
+}
