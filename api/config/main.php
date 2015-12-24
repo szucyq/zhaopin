@@ -60,10 +60,11 @@ return [
             'showScriptName' => false,
             'rules'=>[
                 'login' => 'site/login',
-//                'logout' => 'site/logout',
-                ['class' => 'yii\rest\UrlRule', 'controller' => ['accounts',],],
-                ['class' => 'yii\rest\UrlRule', 'controller' => ['applicant',],],
-
+                'logout' => 'site/logout',
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['accounts'],],
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['applicant'],],
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['recruitment'],],
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['application'],],
             ]
         ],
 

@@ -91,9 +91,19 @@ class SiteController extends Controller
 
     public function actionLogout()
     {
-        Yii::$app->user->logout();
+        $params=yii::$app->request->getBodyParams();
+        if(empty($params['acc_id'])){
+            return Message::say(Message::E_ERROR,null,"用户账号id不能为空");
+        }
+//        $account=new Accounts();
+        $account=Accounts::findOne($params['acc_id']);
+//        return Message::say(Message::E_OK,$account,"ok");
 
-        return $this->goHome();
+        $account->acc_access_token=null;
+        if($account->save()){
+            return Message::say(Message::E_OK,null,"注销成功");
+        }
+        return Message::say(Message::E_ERROR,null,"注销失败");
     }
     /*
      * 使用手机号进行注册

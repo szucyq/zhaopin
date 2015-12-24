@@ -40,9 +40,9 @@ class Accounts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['acc_userid', 'acc_mobile', 'acc_access_token', 'acc_type', 'acc_state'], 'required'],
+            [['acc_userid', 'acc_mobile',  'acc_type', 'acc_state'], 'required'],
             [['acc_userid', 'acc_mobile', 'acc_type', 'acc_state', 'acc_disabled_begintime', 'acc_disabled_length', 'acc_create_time'], 'integer'],
-            [['acc_username', 'acc_pwd', 'acc_email', 'acc_remark'], 'string', 'max' => 30],
+            [['acc_username', 'acc_pwd', 'acc_email', 'acc_remark','acc_access_token'], 'string', 'max' => 30],
             [['acc_openid', 'acc_unionid', 'acc_access_token', 'acc_device_token'], 'string', 'max' => 100]
         ];
     }

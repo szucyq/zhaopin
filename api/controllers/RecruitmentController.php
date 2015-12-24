@@ -31,6 +31,9 @@ class RecruitmentController extends BaseApi {
         unset($actions['index'],$actions['delete'], $actions['create'],$actions['update'],$actions['view']);
         return $actions;
     }
+    /*
+     * 招聘列表
+     */
     public function actionIndex(){
         $params = yii::$app->getRequest()->getQueryParams();
 
@@ -45,6 +48,9 @@ class RecruitmentController extends BaseApi {
             'query'=>$query,
         ]);
     }
+    /*
+     * 招聘详情
+     */
     public function actionView($id){
         if(empty($id)){
             return Message::say(Message::E_ERROR,null,"招聘id不能为空");
@@ -58,13 +64,10 @@ class RecruitmentController extends BaseApi {
         ]);
 
 
-//        $model = new $this->modelClass;
-//        $data = $model::findOne($id);
-//        if($data == null)
-//            return Message::say(Message::E_ERROR,null,"数据为空");
-//        return Message::say(Message::E_OK,$data,"获取成功");
-
     }
+    /*
+     * 添加招聘
+     */
     public function actionCreate(){
         $params=yii::$app->request->getBodyParams();
         if(empty($params['business_id'])){
@@ -206,5 +209,28 @@ class RecruitmentController extends BaseApi {
             return Message::say(Message::E_ERROR,null,'上传失败');
         }
     }
+    /*
+     * 删除招聘
+     */
+    public function actionDelete(){
+        $params=yii::$app->request->getBodyParams();
+        if(empty($params['recruitment_id'])){
+            return Message::say(Message::E_ERROR,null,"招聘id不能为空");
+        }
+        $this->findModel($params['recruitment_id'])->delete();
+        return Message::say(Message::E_OK,null,"已删除");
+    }
+    protected function findModel($id)
+    {
+        $model = Recruitments::find()->where('recruitment_id=:id', [
+            ':id'=>$id
+        ])->one();
 
+        if ($model!== null) {
+            return $model;
+        } else {
+//            throw new NotFoundHttpException('您访问的事件没有找到');
+            return Message::say(Message::E_ERROR,null,"该招聘不存在");
+        }
+    }
 } 

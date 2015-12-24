@@ -82,7 +82,7 @@ class BaseApi extends ActiveController{
             'view' => ['GET'],
             'create' => ['POST'],
             'update' => ['POST','PUT'],
-            'delete' => ['DELETE'],
+            'delete' => ['Post'],
         ];
     }
 

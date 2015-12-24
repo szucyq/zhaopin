@@ -33,16 +33,16 @@ class AccountsController extends BaseApi {
             'create'=>['Post'],
             'index'=>['Get'],
             'login'=>['Post'],
-            'applicantupdate'=>['Post'],
-            'businessupdate'=>['Post'],
+            'view'=>['get'],
+
         ];
     }
-//    public function actions()
-//    {
-//        $actions = parent::actions();
-//        unset($actions['index'],$actions['view'],$actions['delete'], $actions['create'],$actions['update']);
-//        return $actions;
-//    }
+    public function actions()
+    {
+        $actions = parent::actions();
+        unset($actions['index'],$actions['view'],$actions['delete'], $actions['create'],$actions['update']);
+        return $actions;
+    }
 
     public function actionIndex(){
 //        return ["status"=>0,"data"=>"index"];
